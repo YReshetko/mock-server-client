@@ -84,11 +84,9 @@ func (a *assertion) WithJsonBody(expectedBody interface{}) *assertion {
 				if err != nil {
 					return fmt.Errorf("unable to unmarshal request %v: %w", detectedBody, err)
 				}
-
 			default:
 				return fmt.Errorf("unknown json type, expected one of [%v]; got %v", []string{"JSON"}, m["type"])
 			}
-			return fmt.Errorf("request %v is not in expected format", body)
 		}
 		return nil
 	}
