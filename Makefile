@@ -14,3 +14,7 @@ docker-logs:
 
 .PHONY: docker-rerun
 docker-rerun: docker-down docker-up
+
+.PHONY: examples
+examples:
+	go test ./examples/...

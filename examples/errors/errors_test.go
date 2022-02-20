@@ -34,7 +34,7 @@ func (c *ErrorsClientSuite) TestTimeout() {
 		Name("Timeout endpoint submission").
 		DefaultResponse(
 			msc.WithStatusCode(http.StatusOK),
-			msc.WithDelay(time.Second*2),
+			msc.WithDelay(time.Second*5),
 		).
 		//NumCalls(2).
 		NumCalls(1).
