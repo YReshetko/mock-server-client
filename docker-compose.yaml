@@ -1,0 +1,13 @@
+version: '3.5'
+services:
+
+  mockserver:
+    image: mockserver/mockserver:latest
+    restart: on-failure
+    environment:
+      - MOCKSERVER_PROPERTY_FILE=/config/mockserver.properties
+    volumes:
+      - ./mockserver.properties:/config/mockserver.properties
+    ports:
+      - 1080:1080
+    container_name: mockserver
