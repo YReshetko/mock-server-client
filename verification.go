@@ -60,6 +60,34 @@ func (a *assertion) WithJsonBody(expectedBody interface{}) *assertion {
 				return err
 			}
 		default:
+			m := map[string]interface{}{}
+			bytes, err := json.Marshal(actualBody)
+			if err != nil {
+				return fmt.Errorf("unable to marshal request %v: %w", actualBody, err)
+			}
+			err = json.Unmarshal(bytes, &m)
+			if err != nil {
+				return fmt.Errorf("unable to unmarshal request %v: %w", actualBody, err)
+			}
+
+			switch m["type"] {
+			case "JSON":
+				detectedBody, ok := m["json"]
+				if !ok {
+					return fmt.Errorf("no string parameters in json [%v]", actualBody)
+				}
+				bytes, err := json.Marshal(detectedBody)
+				if err != nil {
+					return fmt.Errorf("unable to marshal request %v: %w", detectedBody, err)
+				}
+				err = json.Unmarshal(bytes, expectedBody)
+				if err != nil {
+					return fmt.Errorf("unable to unmarshal request %v: %w", detectedBody, err)
+				}
+
+			default:
+				return fmt.Errorf("unknown json type, expected one of [%v]; got %v", []string{"JSON"}, m["type"])
+			}
 			return fmt.Errorf("request %v is not in expected format", body)
 		}
 		return nil
